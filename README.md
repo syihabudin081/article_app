@@ -4,7 +4,7 @@ This application is built with Go Fiber for web handling, GORM for database inte
 
 ## Features
 
-- **User Authentication**: Secure user authentication using JWT.
+- **User Authentication and Authorization**: Secure user authentication and role-based access control using JWT.
 - **Article Management**: CRUD operations for articles with category and status options.
 - **Comment Management**: Users can create, update, and delete comments on articles.
 - **Database Relations**: Articles and comments are linked to users with foreign keys for relational data.
