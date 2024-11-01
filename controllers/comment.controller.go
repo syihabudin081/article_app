@@ -90,7 +90,7 @@ func (cc *CommentController) Create(c *fiber.Ctx) error {
 // @Param article_id path string true "Article ID"
 // @Success 200 {object} utils.Response
 // @Failure 404 {object} utils.Response
-// @Router /articles/{article_id}/comments [get]
+// @Router /article/{articleId}/comments [get]
 func (cc *CommentController) GetByArticleID(c *fiber.Ctx) error {
 
 	// uuid to string
@@ -232,7 +232,7 @@ func (cc *CommentController) Delete(c *fiber.Ctx) error {
 // @Param user_id path string true "User ID"
 // @Success 200 {object} utils.Response
 // @Failure 404 {object} utils.Response
-// @Router /users/{user_id}/comments [get]
+// @Router /user/{userId}/comments [get]
 func (cc *CommentController) GetByUserID(c *fiber.Ctx) error {
 
 	userIDString := c.Params("userId")
