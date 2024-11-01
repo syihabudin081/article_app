@@ -63,6 +63,11 @@ These instructions will help you set up and run the application on your local ma
    ```bash
    docker-compose up --build
    ```
+### ERD Diagram
+ open folder `erd` and open `ERD.png` or ERD.md file
+
+### App Architecture
+ open folder `app architecture` and open `app architecture.png`
 
 ## API Documentation
 
