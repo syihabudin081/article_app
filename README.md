@@ -72,7 +72,7 @@ These instructions will help you set up and run the application on your local ma
 ## API Documentation
 
 You can access the API documentation at:
-- Local: [http://localhost:8080/swagger/index.html](http://localhost:8080/swagger/index.html)
+- Local: [http://localhost:3000/swagger/index.html](http://localhost:8080/swagger/index.html)
 - Online: [SwaggerHub Documentation](https://app.swaggerhub.com/apis/SYIHABUPNYK/article_online_ordent/1.0.0)
 
 --- 
