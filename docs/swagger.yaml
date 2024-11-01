@@ -1,0 +1,429 @@
+definitions:
+  models.Article:
+    properties:
+      author:
+        $ref: '#/definitions/models.User'
+      author_id:
+        description: Foreign key to User
+        type: string
+      category:
+        type: string
+      content:
+        type: string
+      created_at:
+        type: string
+      deleted_at:
+        description: Soft delete enabled
+        type: string
+      id:
+        type: string
+      status:
+        description: 'Options: draft, published, archived'
+        type: string
+      title:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  models.Comment:
+    properties:
+      article:
+        $ref: '#/definitions/models.Article'
+      article_id:
+        description: Foreign key with CASCADE delete
+        type: string
+      content:
+        type: string
+      created_at:
+        type: string
+      deleted_at:
+        description: Soft delete enabled
+        type: string
+      id:
+        type: string
+      updated_at:
+        type: string
+      user:
+        $ref: '#/definitions/models.User'
+      user_id:
+        type: string
+    type: object
+  models.Role:
+    properties:
+      id:
+        type: integer
+      name:
+        description: 'Examples: "admin", "author", "user"'
+        type: string
+    type: object
+  models.User:
+    properties:
+      created_at:
+        type: string
+      deleted_at:
+        description: Soft delete enabled
+        type: string
+      email:
+        type: string
+      id:
+        type: string
+      password:
+        type: string
+      role:
+        $ref: '#/definitions/models.Role'
+      role_id:
+        description: Foreign key to Role
+        type: integer
+      updated_at:
+        type: string
+      username:
+        type: string
+    type: object
+  utils.Response:
+    properties:
+      data: {}
+      error:
+        type: string
+      message:
+        type: string
+      status:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /articles:
+    get:
+      consumes:
+      - application/json
+      description: Get all articles
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: Get all articles
+      tags:
+      - articles
+    post:
+      consumes:
+      - application/json
+      description: Create a new article
+      parameters:
+      - description: Article object that needs to be created
+        in: body
+        name: article
+        required: true
+        schema:
+          $ref: '#/definitions/models.Article'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: Create a new article
+      tags:
+      - articles
+  /articles/{article_id}/comments:
+    get:
+      consumes:
+      - application/json
+      description: Get all comments for a specific article
+      parameters:
+      - description: Article ID
+        in: path
+        name: article_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: Get comments for an article
+      tags:
+      - comments
+  /articles/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete an article by ID
+      parameters:
+      - description: Article ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: Delete an article by ID
+      tags:
+      - articles
+    get:
+      consumes:
+      - application/json
+      description: Get an article by ID
+      parameters:
+      - description: Article ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: Get an article by ID
+      tags:
+      - articles
+    put:
+      consumes:
+      - application/json
+      description: Update an article by ID
+      parameters:
+      - description: Article ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Article object that needs to be updated
+        in: body
+        name: article
+        required: true
+        schema:
+          $ref: '#/definitions/models.Article'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: Update an article by ID
+      tags:
+      - articles
+  /comments:
+    post:
+      consumes:
+      - application/json
+      description: Create a new comment for an article
+      parameters:
+      - description: Comment object that needs to be created
+        in: body
+        name: comment
+        required: true
+        schema:
+          $ref: '#/definitions/models.Comment'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.Comment'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: Create a new comment
+      tags:
+      - comments
+  /comments/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a comment by ID
+      parameters:
+      - description: Comment ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: Delete a comment by ID
+      tags:
+      - comments
+    get:
+      consumes:
+      - application/json
+      description: Get a comment by ID
+      parameters:
+      - description: Comment ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: Get a comment by ID
+      tags:
+      - comments
+    put:
+      consumes:
+      - application/json
+      description: Update a comment by ID
+      parameters:
+      - description: Comment ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Comment object that needs to be updated
+        in: body
+        name: comment
+        required: true
+        schema:
+          $ref: '#/definitions/models.Comment'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: Update a comment by ID
+      tags:
+      - comments
+  /users:
+    post:
+      consumes:
+      - application/json
+      description: Register a new user
+      parameters:
+      - description: User object that needs to be registered
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/models.User'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: Register a new user
+      tags:
+      - users
+  /users/{user_id}/comments:
+    get:
+      consumes:
+      - application/json
+      description: Get all comments for a specific user
+      parameters:
+      - description: User ID
+        in: path
+        name: user_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: Get comments by user ID
+      tags:
+      - comments
+  /users/login:
+    post:
+      consumes:
+      - application/json
+      description: Login a user
+      parameters:
+      - description: User object that needs to be logged in
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/models.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.Response'
+      summary: Login a user
+      tags:
+      - users
+swagger: "2.0"
